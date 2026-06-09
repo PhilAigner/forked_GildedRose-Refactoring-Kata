@@ -65,4 +65,24 @@ public class GildedRoseTest
         app.UpdateQuality();
         Assert.That(items[0].Quality, Is.EqualTo(50));
     }
+
+    // Test 7: Sulfuras never changes in quality
+    [Test]
+    public void Sulfuras_QualityNeverChanges()
+    {
+        var items = new List<Item> { new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 5, Quality = 80 } };
+        var app = new GildedRose(items);
+        app.UpdateQuality();
+        Assert.That(items[0].Quality, Is.EqualTo(80));
+    }
+
+    // Test 8: Sulfuras SellIn never decreases
+    [Test]
+    public void Sulfuras_SellInNeverChanges()
+    {
+        var items = new List<Item> { new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 5, Quality = 80 } };
+        var app = new GildedRose(items);
+        app.UpdateQuality();
+        Assert.That(items[0].SellIn, Is.EqualTo(5));
+    }
 }

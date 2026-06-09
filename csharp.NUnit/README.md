@@ -41,7 +41,7 @@ This makes failures easy to pinpoint.
 |------------------|-------------|
 | Normal Item      | Quality -1 per day; -2 after SellIn; Quality never < 0 |
 | Aged Brie        | Quality +1 per day; +2 after SellIn; Quality never > 50 |
-| Sulfuras         | *(to be added)* |
+| Sulfuras         | Quality always stays at 80; SellIn never decreases |
 | Backstage passes | *(to be added)* |
 
 ## Challenges
