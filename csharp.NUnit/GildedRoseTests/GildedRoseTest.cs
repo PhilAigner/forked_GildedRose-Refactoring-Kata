@@ -35,4 +35,34 @@ public class GildedRoseTest
         app.UpdateQuality();
         Assert.That(items[0].Quality, Is.EqualTo(0));
     }
+
+    // Test 4: Aged Brie increases in quality by 1 before sell-by date
+    [Test]
+    public void AgedBrie_QualityIncreasesBy1_BeforeSellIn()
+    {
+        var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = 5, Quality = 10 } };
+        var app = new GildedRose(items);
+        app.UpdateQuality();
+        Assert.That(items[0].Quality, Is.EqualTo(11));
+    }
+
+    // Test 5: Aged Brie increases in quality by 2 after sell-by date
+    [Test]
+    public void AgedBrie_QualityIncreasesBy2_AfterSellIn()
+    {
+        var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = 0, Quality = 10 } };
+        var app = new GildedRose(items);
+        app.UpdateQuality();
+        Assert.That(items[0].Quality, Is.EqualTo(12));
+    }
+
+    // Test 6: Aged Brie quality never exceeds 50
+    [Test]
+    public void AgedBrie_QualityNeverExceeds50()
+    {
+        var items = new List<Item> { new Item { Name = "Aged Brie", SellIn = 5, Quality = 50 } };
+        var app = new GildedRose(items);
+        app.UpdateQuality();
+        Assert.That(items[0].Quality, Is.EqualTo(50));
+    }
 }
