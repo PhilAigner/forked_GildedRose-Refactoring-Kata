@@ -8,42 +8,67 @@ public class GildedRose(IList<Item> items)
     {
         foreach (var item in items)
         {
-            if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
-            {
-                if (item.Quality > 0 && item.Name != "Sulfuras, Hand of Ragnaros") item.Quality -= 1;
-            }
-            else
-            {
-                if (item.Quality < 50)
-                {
-                    item.Quality += 1;
+            UpdateItem(item);
+        }
+    }
 
-                    if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (item.SellIn < 11 && item.Quality < 50) item.Quality += 1;
-                        if (item.SellIn < 6 && item.Quality < 50) item.Quality += 1;
-                    }
-                }
-            }
+    private void UpdateItem(Item item)
+    {
+        if (item.Name == "Sulfuras, Hand of Ragnaros") return;
 
-            if (item.Name != "Sulfuras, Hand of Ragnaros") item.SellIn -= 1;
+        if (item.Name == "Aged Brie")
+            UpdateAgedBrie(item);
+        else if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+            UpdateBackstagePass(item);
+        else
+            UpdateNormalItem(item);
 
-            if (item.SellIn >= 0) continue;
-            if (item.Name != "Aged Brie")
-            {
-                if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
-                {
-                    if (item.Quality > 0 && item.Name != "Sulfuras, Hand of Ragnaros") item.Quality -= 1;
-                }
-                else
-                {
-                    item.Quality -= item.Quality;
-                }
-            }
-            else if (item.Quality < 50)
-            {
-                item.Quality += 1;
-            }
+        item.SellIn--;
+
+        if (item.SellIn < 0)
+            ApplyExpiredEffect(item);
+    }
+
+    private void UpdateNormalItem(Item item)
+    {
+        if (item.Quality > 0)
+            item.Quality--;
+    }
+
+    private void UpdateAgedBrie(Item item)
+    {
+        if (item.Quality < 50)
+            item.Quality++;
+    }
+
+    private void UpdateBackstagePass(Item item)
+    {
+        if (item.Quality >= 50) return;
+
+        item.Quality++;
+
+        if (item.SellIn <= 10 && item.Quality < 50)
+            item.Quality++;
+
+        if (item.SellIn <= 5 && item.Quality < 50)
+            item.Quality++;
+    }
+
+    private void ApplyExpiredEffect(Item item)
+    {
+        if (item.Name == "Aged Brie")
+        {
+            if (item.Quality < 50)
+                item.Quality++;
+        }
+        else if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+        {
+            item.Quality = 0;
+        }
+        else
+        {
+            if (item.Quality > 0)
+                item.Quality--;
         }
     }
 }
