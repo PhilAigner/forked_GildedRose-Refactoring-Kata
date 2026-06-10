@@ -8,6 +8,16 @@ public class GildedRose(IList<Item> items)
     private bool IsBackstagePass(Item item) => item.Name == "Backstage passes to a TAFKAL80ETC concert";
     private bool IsSulfuras(Item item) => item.Name == "Sulfuras, Hand of Ragnaros";
 
+    private void IncreaseQuality(Item item)
+    {
+        if (item.Quality < 50) item.Quality++;
+    }
+
+    private void DecreaseQuality(Item item)
+    {
+        if (item.Quality > 0) item.Quality--;
+    }
+
     public void UpdateQuality()
     {
         foreach (var item in items)
@@ -36,27 +46,25 @@ public class GildedRose(IList<Item> items)
 
     private void UpdateNormalItem(Item item)
     {
-        if (item.Quality > 0)
-            item.Quality--;
+        DecreaseQuality(item);
     }
 
     private void UpdateAgedBrie(Item item)
     {
-        if (item.Quality < 50)
-            item.Quality++;
+        IncreaseQuality(item);
     }
 
     private void UpdateBackstagePass(Item item)
     {
         if (item.Quality >= 50) return;
 
-        item.Quality++;
+        IncreaseQuality(item);
 
         if (item.SellIn <= 10 && item.Quality < 50)
-            item.Quality++;
+            IncreaseQuality(item);
 
         if (item.SellIn <= 5 && item.Quality < 50)
-            item.Quality++;
+            IncreaseQuality(item);
     }
 
     private void ApplyExpiredEffect(Item item)
@@ -64,7 +72,7 @@ public class GildedRose(IList<Item> items)
         if (IsAgedBrie(item))
         {
             if (item.Quality < 50)
-                item.Quality++;
+                IncreaseQuality(item);
         }
         else if (IsBackstagePass(item))
         {
@@ -73,7 +81,7 @@ public class GildedRose(IList<Item> items)
         else
         {
             if (item.Quality > 0)
-                item.Quality--;
+                DecreaseQuality(item);
         }
     }
 }
