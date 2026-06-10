@@ -49,3 +49,29 @@ This makes failures easy to pinpoint.
 - **Deeply nested conditionals**: The original `UpdateQuality()` method uses heavily nested `if` blocks with no comments, making it hard to read. Reading `GildedRoseRequirements.md` alongside the code was necessary to confirm the intended behavior.
 - **Post-sell-in edge cases**: The double-degradation rule for normal items and the double-increase for Aged Brie after SellIn=0 are easy to miss — these required dedicated tests.
 - **Quality boundaries**: The 0 and 50 limits are enforced implicitly across multiple branches, so boundary tests are critical to catch regressions during refactoring.
+
+## Excercise 7 Refactoring
+### Zusammenfassung der Commits
+
+| Commit                  | What                           |
+|-------------------------|--------------------------------|
+| `code cleanup to .net 10 version` | First simple cleanup           |
+| `refactored if blocks kinzl` | Simplified if blocks           |
+| `added methods, update normal item, update aged brie, update backstage pass, apply expired effect` | Extracted logic to methods     |
+| `added private methods is aged brie, is backstage pass, is sulfuras` | Extracted if blocks to methods |
+| `added methods icrease quality and decrease quality`                      | Added simple helper methods    |
+
+### Refactoring Decisions
+The IDE (Rider) was helpful to use the latest .net features.
+
+We started to clean up the if blocks.
+
+Logic was outsourced into methods.
+
+Added helper methods -> Big methods to small methods
+
+### Challenges
+When refactoring the if block we had some troubles because confusing code blocks.
+
+Too big blocks in one refactor step -> methods failed because we refactored too much before running the tests.
+
