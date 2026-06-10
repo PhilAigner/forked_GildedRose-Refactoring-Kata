@@ -4,6 +4,10 @@ namespace GildedRoseKata;
 
 public class GildedRose(IList<Item> items)
 {
+    private bool IsAgedBrie(Item item) => item.Name == "Aged Brie";
+    private bool IsBackstagePass(Item item) => item.Name == "Backstage passes to a TAFKAL80ETC concert";
+    private bool IsSulfuras(Item item) => item.Name == "Sulfuras, Hand of Ragnaros";
+
     public void UpdateQuality()
     {
         foreach (var item in items)
@@ -14,17 +18,18 @@ public class GildedRose(IList<Item> items)
 
     private void UpdateItem(Item item)
     {
-        if (item.Name == "Sulfuras, Hand of Ragnaros") return;
+        if (IsSulfuras(item)) return;
 
-        if (item.Name == "Aged Brie")
+        if (IsAgedBrie(item))
             UpdateAgedBrie(item);
-        else if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+        else if (IsBackstagePass(item))
             UpdateBackstagePass(item);
         else
             UpdateNormalItem(item);
 
         item.SellIn--;
 
+        // post-sell-in adjustments
         if (item.SellIn < 0)
             ApplyExpiredEffect(item);
     }
@@ -56,12 +61,12 @@ public class GildedRose(IList<Item> items)
 
     private void ApplyExpiredEffect(Item item)
     {
-        if (item.Name == "Aged Brie")
+        if (IsAgedBrie(item))
         {
             if (item.Quality < 50)
                 item.Quality++;
         }
-        else if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+        else if (IsBackstagePass(item))
         {
             item.Quality = 0;
         }
